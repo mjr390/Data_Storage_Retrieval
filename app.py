@@ -6,6 +6,7 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
+from datetime import timedelta
 
 # Database Setup
 engine = create_engine("sqlite:///Resources/hawaii.sqlite")
@@ -22,6 +23,9 @@ from flask import Flask, jsonify
 # Create an app, being sure to pass __name__
 app = Flask(__name__)
 
+# Define global variables and functions
+Measurement_dates = session.query(Measurement)
+
 
 # Define what to do when a user hits the index route
 @app.route("/")
@@ -33,9 +37,9 @@ def home():
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     print("Server received request for 'precipitation' page")
-    from datetime import timedelta
+    
     # Calculate the date 1 year ago from today (find 1 year from last day in data instead)
-    Measurement_dates = session.query(Measurement)
+    
     dates_list = []
     for row in Measurement_dates:
         dates_list.append(row.date)
@@ -57,7 +61,7 @@ def precipitation():
 @app.route("/api/v1.0/stations") 
 def stations():
     print("Server received request for 'stations' page")
-    Measurement_dates = session.query(Measurement)
+    
     stations_list = []
     for row in Measurement_dates:
         stations_list.append(row.station)
@@ -71,9 +75,9 @@ def stations():
 @app.route("/api/v1.0/tobs")
 def tobs():
     print("Server received request for 'tobs' page")
-    from datetime import timedelta
+    
     # Calculate the date 1 year ago from today (find 1 year from last day in data instead)
-    Measurement_dates = session.query(Measurement)
+    
     dates_list = []
     for row in Measurement_dates:
         dates_list.append(row.date)
@@ -94,7 +98,7 @@ def tobs():
 @app.route("/api/v1.0/<start>")
 def after_start(start):
     print(f"Server received request for 'start date' page {start}")
-    from datetime import timedelta
+    
     # Query for on or after the start date
     after_start_q = session.query(Measurement).\
         filter(Measurement.date >= start)
@@ -113,7 +117,7 @@ def after_start(start):
 @app.route("/api/v1.0/<start>/<end>")
 def between_dates(start, end):
     print(f"Server received request for 'between date' page {start} to {end}")
-    from datetime import timedelta
+    
     # Query for on or after the start date
     after_start_q = session.query(Measurement).\
         filter(Measurement.date >= start).filter(Measurement.date <= end)
