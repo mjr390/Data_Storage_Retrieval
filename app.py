@@ -73,8 +73,6 @@ def tobs():
     print("Server received request for 'tobs' page")
     from datetime import timedelta
     # Calculate the date 1 year ago from today (find 1 year from last day in data instead)
-    from datetime import timedelta
-    # Calculate the date 1 year ago from today (find 1 year from last day in data instead)
     Measurement_dates = session.query(Measurement)
     dates_list = []
     for row in Measurement_dates:
